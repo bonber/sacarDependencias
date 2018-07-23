@@ -6,18 +6,20 @@ import os.path
 def revisarImport(linea):
     if 'import ' in linea or ' import ' in linea:
         if  "from" in linea:
-            linea = linea.split(' ')
-            f.write(linea[3])
-            print('Añadida: ' + linea[3])
+            linea = linea.split('from')[1].split(' ')
+            for line in linea:
+                if line != "":
+                    f.write(line.replace(",","") + str("\n"))
+                    print('Añadida: ' + line.replace(",",""))
         else:
             linea = linea.split(' ')
-            f.write(linea[1])
+            f.write(linea[1] + str("\n"))
             print('Añadida: ' + linea[1])
 
 def leerFichero(fichero):
     with open(fichero, "r") as ObjFichero:
         for line in ObjFichero:
-            revisarImport(line)
+            revisarImport(line.replace("\n",""))
 
 #Argumentos
 parser = argparse.ArgumentParser()
@@ -39,4 +41,3 @@ else:
             for filename in [f for f in filenames if f.endswith(".py")]:
                 leerFichero(os.path.join(dirpath, filename))
         f.close()
-
